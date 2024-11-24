@@ -1,0 +1,68 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Parkir</title>
+  </head>
+  <body>
+    <h1>Sistem Parkir Berbasis YOLOv9</h1>
+    <div>
+      <img src="{{ url_for('video_feed') }}" alt="Video Stream" />
+    </div>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parking Detection Stream</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+        background-color: #282c34;
+        color: white;
+      }
+      h1 {
+        font-size: 24px;
+        margin-top: 20px;
+      }
+      .info {
+        font-size: 18px;
+        margin: 10px 0;
+      }
+      img {
+        width: 100%;
+        max-width: 640px;
+        border: 2px solid white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Live Parking Detection Stream</h1>
+    <div class="info" id="slot-info">Loading parking slot info...</div>
+    <img src="{{ url_for('video_feed') }}" alt="Video Stream" />
+  </body>
+  <script>
+    // Script untuk memperbarui informasi slot parkir
+    setInterval(() => {
+      fetch("/slot_info")
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById("slot-info").innerText = `Parking spaces: ${
+            data.total_spaces
+          } | Occupied: ${data.total_spaces - data.available_spaces} | Empty: ${
+            data.available_spaces
+          }`;
+        })
+        .catch((error) =>
+          console.error("Error fetching parking slot info:", error)
+        );
+    }, 1000);
+  </script>
+</html>
